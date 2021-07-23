@@ -1,7 +1,7 @@
 #!/bin/sh
 exec >logfile.txt 2>&1
 cd /workspace/development
-if [ -d "./frappe-bench" ]
+if [ -d "/workspace/development/frappe-bench" ]
     then
     echo "Bench exists"
 else
