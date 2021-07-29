@@ -1,5 +1,14 @@
 #!/bin/sh
 exec >logfile.txt 2>&1
+if [ -d "/home/frappe/.commands" ]
+    then
+    echo ".commands exists"
+else
+    mkdir /home/frappe/.commands
+    mv /home/frappe/bs_command.sh /home/frappe/.commands/bs_command.sh
+    echo "alias bs='bash /home/frappe/.commands/bs_command.sh'" >> /home/frappe/.bashrc
+    echo "alias bs='bash /home/frappe/.commands/bs_command.sh'" >> /home/frappe/.zshrc
+fi
 cd /workspace/development
 if [ -d "/workspace/development/frappe-bench" ]
     then

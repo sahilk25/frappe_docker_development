@@ -118,8 +118,9 @@ RUN  /tmp/zsh-in-docker.sh \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
 
 COPY setupbench.sh .
+COPY bs_command.sh .
 ADD .vscode /tmp/.vscode
-RUN sudo chmod u+x setupbench.sh && sudo chown frappe:frappe -R /tmp/.vscode
+RUN sudo chmod u+x setupbench.sh bs_command.sh && sudo chown frappe:frappe -R /tmp/.vscode
 ENTRYPOINT ["bash","/home/frappe/setupbench.sh"]
 
 EXPOSE 8000-8005 9000-9005 6787
