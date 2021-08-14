@@ -1,41 +1,75 @@
 version: '3.7'
 
 services:
-    frappe:
-        image: bench:latest
-        # command: bash -c "sleep infinity"
-        volumes: 
-            - ..:/workspace:cached
-        working_dir: /workspace/development
-        ports:
-            - "8000-8005:8000-8005"
-            - "9000-9005:9000-9005"
+  frappe:
+    image: bench:latest
+    # command: bash -c "sleep infinity"
+    volumes: 
+        - ..:/workspace:cached
+    working_dir: /workspace/development
+    ports:
+        - "8000-8005:8000-8005"
+        - "9000-9005:9000-9005"
 
-    mariadb:
-        image: mariadb:10.3
-        environment:
-            MYSQL_ROOT_PASSWORD: admin@123 #Security at its best
-        volumes:
-            - mariadb_vol:/var/lib/mysql
-        command:
-            - --collation-server=utf8mb4_unicode_ci
-            - --character-set-server=utf8mb4
-            #- --character-set-client-handshake = FALSE
-        # restart: always
-        # ports:
-        #     - "3306:3306"
+  mariadb-master:
+    image: docker.io/bitnami/mariadb:10.4
+    # ports:
+    #   - '3306'
+    volumes:
+      - 'mariadb_master_data:/bitnami/mariadb'
+    environment:
+      - MARIADB_REPLICATION_MODE=master
+      - MARIADB_REPLICATION_PASSWORD=master@slave
+      - MARIADB_REPLICATION_USER=repl_user
+      - MARIADB_ROOT_PASSWORD=master@123
+      - MARIADB_CHARACTER_SET=utf8mb4
+      - MARIADB_COLLATE=utf8mb4_unicode_ci
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
 
-    redis:
-        image: "redis:alpine"
-        hostname: redis
-        # ports:
-        #     - "6379:6379"
-        volumes:
-            - redisdata:/data
-        # restart: always
-
-
-
+  mariadb-slave:
+    image: docker.io/bitnami/mariadb:10.4
+    # ports:
+    #   - '3306'
+    depends_on:
+      - mariadb-master
+    environment:
+      - MARIADB_REPLICATION_MODE=slave
+      - MARIADB_REPLICATION_USER=repl_user
+      - MARIADB_REPLICATION_PASSWORD=master@slave
+      - MARIADB_MASTER_HOST=mariadb-master
+      - MARIADB_MASTER_PORT_NUMBER=3306
+      - MARIADB_MASTER_ROOT_PASSWORD=master@123
+      - MARIADB_ROOT_PASSWORD=slave@123
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+  # mariadb:
+  #     image: mariadb:10.3
+  #     environment:
+  #         MYSQL_ROOT_PASSWORD: admin@123 #Security at its best
+  #     volumes:
+  #         - mariadb_vol:/var/lib/mysql
+  #     command:
+  #         - --collation-server=utf8mb4_unicode_ci
+  #         - --character-set-server=utf8mb4
+  #         #- --character-set-client-handshake = FALSE
+  #     # restart: always
+  #     # ports:
+  #     #     - "3306:3306"
+  redis:
+      image: "redis:alpine"
+      hostname: redis
+      # ports:
+      #     - "6379:6379"
+      volumes:
+          - redisdata:/data
+      # restart: always
 volumes:
-    mariadb_vol:
+    mariadb_master_data:
     redisdata:

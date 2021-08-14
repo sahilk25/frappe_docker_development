@@ -69,6 +69,7 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
 # Detect arch, download and install wkhtmltox
 RUN if [ `uname -m` = 'aarch64' ]; then export ARCH=arm64; fi \
     && if [ `uname -m` = 'x86_64' ]; then export ARCH=amd64; fi \
+    && if [ `uname -m` = 'arm64' ]; then export ARCH=arm64; fi \
     && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_${ARCH}.deb \
     && dpkg -i wkhtmltox_0.12.6-1.buster_${ARCH}.deb && rm wkhtmltox_0.12.6-1.buster_${ARCH}.deb
 
