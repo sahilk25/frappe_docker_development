@@ -6,8 +6,11 @@ if [ -d "/home/frappe/.commands" ]
 else
     mkdir /home/frappe/.commands
     mv /home/frappe/bs_command.sh /home/frappe/.commands/bs_command.sh
+    mv /home/frappe/git_setup.sh /home/frappe/.commands/git_setup.sh
     echo "alias bs='bash /home/frappe/.commands/bs_command.sh'" >> /home/frappe/.bashrc
     echo "alias bs='bash /home/frappe/.commands/bs_command.sh'" >> /home/frappe/.zshrc
+    echo "alias gs='bash /home/frappe/.commands/git_setup.sh'" >> /home/frappe/.bashrc
+    echo "alias gs='bash /home/frappe/.commands/git_setup.sh'" >> /home/frappe/.zshrc
 fi
 cd /workspace/development
 if [ -d "/workspace/development/frappe-bench" ]

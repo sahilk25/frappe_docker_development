@@ -2,9 +2,7 @@
     "name": "Frappe Bench",
     "appPort": [8000, 9000, 6787],
     "remoteUser": "frappe",
-    "settings": {
-      "terminal.integrated.shell.linux": "/bin/zsh"
-    },
+    "userEnvProbe": "interactiveShell",
     "dockerComposeFile": "./docker-compose.yml",
     "service": "frappe",
     "workspaceFolder": "/workspace/development",
@@ -14,6 +12,7 @@
       "auchenberg.vscode-browser-preview",
       "grapecity.gc-excelviewer",
       "mtxr.sqltools",
-      "visualstudioexptteam.vscodeintellicode"
+      "visualstudioexptteam.vscodeintellicode",
+      "GitHub.copilot"
     ]
   }

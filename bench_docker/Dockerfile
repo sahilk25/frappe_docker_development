@@ -10,7 +10,7 @@ RUN curl --silent --location https://deb.nodesource.com/setup_${NODE_VERSION}.x 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update -y && apt-get install  \
     git \
-    wkhtmltopdf \
+    jq \
     mariadb-client \
     postgresql-client \
     gettext-base \
@@ -118,6 +118,7 @@ RUN  /tmp/zsh-in-docker.sh \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
 
 COPY setupbench.sh .
+COPY git_setup.sh .
 COPY bs_command.sh .
 ADD .vscode /tmp/.vscode
 RUN sudo chmod u+x setupbench.sh bs_command.sh && sudo chown frappe:frappe -R /tmp/.vscode

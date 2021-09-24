@@ -16,7 +16,9 @@ frappe container contains all the bench depedencies + ohmyzsh + git + nodejs
 * open vscode in current directory(code .)
 
 * click on reopen in container
-
+## Custom commands
+* ```bs``` #it will close all process running on bench port and start the bench
+* ```gs``` #it will edit the .git/conf file so we can fetch all branches in app
 ## What it will create
 * frappe-bench directory in development directory
 * get-app frappe erpnext bloomstack_core from bloomstack repo
